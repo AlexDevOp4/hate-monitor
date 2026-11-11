@@ -1,0 +1,43 @@
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # Pyflakes
+    "I",     # isort (import sorting)
+    "B",     # flake8-bugbear
+    "DJ",    # flake8-django rules
+    "S",     # flake8-bandit (security checks)
+    "SIM",   # flake8-simplify
+    "UP",    # pyupgrade (modernize Python syntax)
+    "RUF",   # Ruff-specific rules
+]
+
+ignore = [
+    "E501",  # Line length handled by Ruff formatter
+    "S101",  # Allow assert statements (useful for pytest/tests)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore structural noise in auto-generated Django migrations
+"**/migrations/*.py" = ["RUF012", "E501"]
+
+# Allow wildcard imports and long lines in Django settings files
+"**/settings*.py" = ["F403", "F405", "E501"]
+
+# Relax rules in tests (e.g., allow hardcoded credentials/test tokens)
+"**/tests/*.py" = ["S105", "S106"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
