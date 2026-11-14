@@ -40,3 +40,37 @@ class Post(models.Model):
 
     def __str__(self):
         return f"[{self.platform}] @{self.account_handle} - {self.platform_post_id}"
+
+
+class PostAnalysis(models.Model):
+    class Category(models.TextChoices):
+        NONE = "NONE", "None"
+        CRITICISM = "CRITICISM", "Criticism"
+        HOSTILITY = "HOSTILITY", "Hostility"
+        DEHUMANIZATION = "DEHUMANIZATION", "Dehumanization"
+        HARASSMENT = "HARASSMENT", "Harassment"
+        INCITEMENT = "INCITEMENT", "Incitement"
+        THREAT = "THREAT", "Threat"
+        HIGH_PRIORITY_THREAT = "HIGH_PRIORITY_THREAT", "High Priority Threat"
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="analyses")
+    category = models.CharField(
+        max_length=20, choices=Category.choices, default=Category.NONE
+    )
+    confidence = models.FloatField()
+    reasoning = models.TextField(blank=True, default="")
+    requires_review = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Post Analysis"
+        verbose_name_plural = "Post Analyses"
+        constraints = (
+            models.CheckConstraint(
+                condition=models.Q(confidence__gte=0.0, confidence__lte=1.0),
+                name="post_analysis_confidence_between_0_and_1",
+            ),
+        )
+
+    def __str__(self):
+        return f"[{self.Category(self.category).label}] Post {self.post_id}"  # pyright: ignore[reportAttributeAccessIssue]

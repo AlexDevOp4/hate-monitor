@@ -38,6 +38,9 @@ ignore = [
 # Relax rules in tests (e.g., allow hardcoded credentials/test tokens)
 "**/tests/*.py" = ["S105", "S106"]
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
+[tool.pyright]
+include = ["backend"]
+exclude = ["**/migrations", "**/tests"]
+pythonVersion = "3.13"
+pythonPlatform = "Darwin"
+
