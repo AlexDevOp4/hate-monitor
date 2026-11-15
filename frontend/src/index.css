@@ -11,3 +11,23 @@ body {
 .error {
   color: #b91c1c;
 }
+
+form {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 32rem;
+}
+
+label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+li {
+  margin-bottom: 1rem;
+}
+
+label.checkbox {
+  display: flex;
+  align-items: center;
+}
